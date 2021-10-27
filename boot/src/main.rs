@@ -12,6 +12,7 @@ fn main() {
 		let path = PathBuf::from(args.next().unwrap());
 		path.canonicalize().unwrap()
 	};
+
 	let no_boot = if let Some(arg) = args.next() {
 		match arg.as_str() {
 			"--no-run" => true,
@@ -23,7 +24,7 @@ fn main() {
 
 	print!("Creating disk images...");
 	let bios = create_disk_images(&kernel_binary_path);
-	print!(" done.\n");
+	println!(" done.");
 
 	if no_boot {
 		println!("Created disk image at `{}`", bios.display());
@@ -52,13 +53,17 @@ pub fn create_disk_images(kernel_binary_path: &Path) -> PathBuf {
 	build_cmd
 		.arg("--kernel-manifest")
 		.arg(&kernel_manifest_path);
+
 	build_cmd.arg("--kernel-binary").arg(&kernel_binary_path);
+
 	build_cmd
 		.arg("--target-dir")
 		.arg(kernel_manifest_path.parent().unwrap().join("target"));
+
 	build_cmd
 		.arg("--out-dir")
 		.arg(kernel_binary_path.parent().unwrap());
+
 	build_cmd.arg("--quiet");
 
 	if !build_cmd.status().unwrap().success() {
@@ -70,11 +75,13 @@ pub fn create_disk_images(kernel_binary_path: &Path) -> PathBuf {
 		.parent()
 		.unwrap()
 		.join(format!("boot-bios-{}.img", kernel_binary_name));
+
 	if !disk_image.exists() {
 		panic!(
 			"Disk image does not exist at {} after bootloader build",
 			disk_image.display()
 		);
 	}
+
 	disk_image
 }

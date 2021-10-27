@@ -1,12 +1,30 @@
 [package]
 name = "sig_os"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 [workspace]
-members = [
-	"boot"
-]
+members = ["boot"]
 
 [dependencies]
-bootloader = "0"
+bootloader = "*"
+log = "0"
+x86_64 = "0"
+
+[dependencies.font8x8]
+version = "0"
+default-features = false
+features = ["unicode"]
+
+[dependencies.conquer-once]
+version = "0"
+default-features = false
+
+[dependencies.spinning_top]
+version = "0"
+default-features = false
+
+[dependencies.lazy_static]
+version = "1"
+default-features = false
+features = ["spin_no_std"]
